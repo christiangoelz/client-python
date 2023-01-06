@@ -2,7 +2,7 @@
 contains class Api
 """
 
-from federatedsecure.client.interfaces.http import HttpInterface
+from federatedsecure.client.httpsinterface import HttpsInterface
 from federatedsecure.client.representation import Representation
 
 
@@ -14,7 +14,7 @@ class Api:
 
     def __init__(self, url=None, interface=None):
         if url is not None:
-            self.interface = HttpInterface(url)
+            self.interface = HttpsInterface(url)
         elif interface is not None:
             self.interface = interface
 

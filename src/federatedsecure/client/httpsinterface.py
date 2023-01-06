@@ -8,7 +8,7 @@ import requests as _requests
 import urllib3 as _urllib3
 
 
-class HttpInterface:
+class HttpsInterface:
 
     """
     HttpInterface communicates through HTTP or HTTPS with the server
@@ -60,16 +60,16 @@ class HttpInterface:
         logger = _logging.getLogger(__name__)
 
         logger.debug('Sending request: %s %s %s', method, url, body)
-        response = hook(url=url, json={} if body is None else body, verify=HttpInterface.ssl_verify)
+        response = hook(url=url, json={} if body is None else body, verify=HttpsInterface.ssl_verify)
         logger.debug('Receiving response: %d %s', response.status_code, response.text)
 
         if response.status_code not in [200, 201, 202, 204]:
-            message = HttpInterface._formatted_line(
+            message = HttpsInterface._formatted_line(
                 method, url, response.status_code, response.text)
             logger.error(message)
             raise Exception(message)
 
-        message = HttpInterface._formatted_line(
+        message = HttpsInterface._formatted_line(
             method, url, response.status_code)
         logger.info(message)
 
@@ -80,7 +80,7 @@ class HttpInterface:
         """log format according to W3C Working Draft WD-logfile-960323"""
         date = _datetime.date.today().strftime("%Y-%m-%d")
         time = _datetime.datetime.now().strftime("%H:%M:%S")
-        human_readable = HttpInterface._human_readable(status)
+        human_readable = HttpsInterface._human_readable(status)
         return f'{date}\t{time}\t{method}\t{uri}\t{status}\t{human_readable}\t{comment}'
 
     @staticmethod

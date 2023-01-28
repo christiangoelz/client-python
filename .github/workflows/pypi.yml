@@ -12,7 +12,7 @@ jobs:
       - name: build wheel
         working-directory: .
         run: |
-          cp -r src pypi
+          cp -r src/federatedsecure pypi
           cd pypi
           python setup.py sdist bdist_wheel
       - name: publish package

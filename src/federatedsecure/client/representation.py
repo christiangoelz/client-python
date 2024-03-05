@@ -16,12 +16,12 @@ class Representation(dict):
         super().__init__(representation_uuid=representation_uuid)
 
         # however, api is a client-side instance and should
-        # not get serialized, so lives outside of the dict
+        # not get serialized, so lives outside the dict
         self.api = api
 
     def __getattr__(self, member_name):
         if member_name in self.__dict__:
-            return super().__getattr__(member_name)
+            return self.__dict__[member_name]
         return self.api.attribute(self['representation_uuid'], member_name)
 
     def __call__(self, *args, **kwargs):

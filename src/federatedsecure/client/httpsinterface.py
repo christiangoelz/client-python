@@ -15,7 +15,8 @@ class HttpsInterface:
     """
 
     # enable the following line if SSL verification fails on e.g. localhost
-    _urllib3.disable_warnings(category=_urllib3.exceptions.InsecureRequestWarning)
+    _urllib3.disable_warnings(
+        category=_urllib3.exceptions.InsecureRequestWarning)
 
     # enable the following line if SSL verification fails on Android devices
     _urllib3.util.ssl_.DEFAULT_CIPHERS =\
@@ -60,20 +61,24 @@ class HttpsInterface:
         logger = _logging.getLogger(__name__)
 
         logger.debug('Sending request: %s %s %s', method, url, body)
-        response = hook(url=url, json={} if body is None else body, verify=HttpsInterface.ssl_verify)
-        logger.debug('Receiving response: %d %s', response.status_code, response.text)
+        response = hook(url=url,
+                        json={} if body is None else body,
+                        verify=HttpsInterface.ssl_verify)
+        logger.debug('Receiving response: %d %s',
+                     response.status_code, response.text)
 
         if response.status_code not in [200, 201, 202, 204]:
             message = HttpsInterface._formatted_line(
                 method, url, response.status_code, response.text)
             logger.error(message)
-            raise Exception(message)
+            raise RuntimeError(message)
 
         message = HttpsInterface._formatted_line(
             method, url, response.status_code)
         logger.info(message)
 
-        return None if response.text == '' else response.json(), response.status_code
+        return (None if response.text == '' else response.json(),
+                response.status_code)
 
     @staticmethod
     def _formatted_line(method="-", uri="-", status="-", comment="-"):
